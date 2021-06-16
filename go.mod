@@ -9,8 +9,6 @@ require (
 	github.com/storezhang/gox v1.5.2
 	github.com/storezhang/pangu v1.2.4
 	github.com/storezhang/pangu-logging v1.0.0
-	xorm.io/builder v0.3.9
-	xorm.io/xorm v1.1.0
 )
 
 replace github.com/storezhang/pangu => ../../storezhang/pangu

@@ -4,25 +4,18 @@ import (
 	`database/sql`
 	`io/fs`
 	`net/http`
+	`strings`
 
 	`github.com/go-sql-driver/mysql`
 	`github.com/rubenv/sql-migrate`
 	`github.com/storezhang/glog`
-	`github.com/storezhang/gox`
 	`github.com/storezhang/gox/field`
 	`github.com/storezhang/pangu`
-	`xorm.io/builder`
-	`xorm.io/xorm`
 )
 
 const noSuchTable = 1146
 
 type Migration struct {
-	// 文件名称
-	Id string `xorm:"varchar(64) notnull default('')"`
-	// 升级时间
-	AppliedAt gox.Timestamp `xorm:"created default('2020-02-04 09:55:52')"`
-
 	migrations []fs.FS       `xorm:"-"`
 	config     *pangu.Config `xorm:"-"`
 	logger     glog.Logger   `xorm:"-"`
@@ -74,7 +67,7 @@ func (m *Migration) Migrate() (err error) {
 		}
 	}()
 
-	if err = m.cleanDeletedMigrations(migrations, engine); nil != err {
+	if err = m.clear(db, database.Migration.Table, migrations); nil != err {
 		return
 	}
 	_, err = migrate.Exec(db, database.Type, migrations, migrate.Up)
@@ -91,21 +84,24 @@ func (m *Migration) shouldMigration() bool {
 	return 0 != len(m.migrations)
 }
 
-func (m *Migration) cleanDeletedMigrations(ms migrate.MigrationSource, engine *xorm.Engine) (err error) {
+func (m *Migration) clear(db *sql.DB, table string, ms migrate.MigrationSource) (err error) {
 	var (
-		migrates     []*migrate.Migration
+		migrations   []*migrate.Migration
 		migrateFiles = make([]string, 0)
 	)
 
-	if migrates, err = ms.FindMigrations(); nil != err {
+	if migrations, err = ms.FindMigrations(); nil != err {
 		return
 	}
-	for _, m := range migrates {
-		migrateFiles = append(migrateFiles, m.Id)
+	for _, migration := range migrations {
+		migrateFiles = append(migrateFiles, migration.Id)
 	}
 
-	cond := builder.NotIn("id", migrateFiles)
-	if _, err = engine.Where(cond).Delete(&Migration{}); nil != err {
+	var stmt *sql.Stmt
+	if stmt, err = db.Prepare("DELETE FROM ? WHERE id NOT IN(?)"); nil != err {
+		return
+	}
+	if _, err = stmt.Exec(table, strings.Join(migrateFiles, ",")); nil != err {
 		// 表不存在不需要清理
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 			if noSuchTable == mysqlErr.Number {
