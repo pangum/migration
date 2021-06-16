@@ -6,7 +6,14 @@ import (
 )
 
 func init() {
-	if err := pangu.New().Provides(newMigration, newMigrate); nil != err {
+	app := pangu.New()
+
+	if err := app.Provides(newMigration, newMigrate); nil != err {
+		panic(err)
+	}
+	if err := app.Invoke(func(migrate *Migrate) error {
+		return app.Adds(migrate)
+	}); nil != err {
 		panic(err)
 	}
 }
