@@ -28,7 +28,7 @@ type config struct {
 	Path string `default:"data.db" json:"path,omitempty" yaml:"path"`
 
 	// 数据迁移配置
-	Migration migrationConfig `json:"migration" yaml:"migration" validate:"required"`
+	Migration migrationConfig `json:"migrate" yaml:"migrate" validate:"required"`
 }
 
 func (c *config) dsn() (dsn string, err error) {

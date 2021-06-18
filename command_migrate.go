@@ -6,29 +6,28 @@ import (
 	`github.com/storezhang/pangu/command`
 )
 
-var _ app.Command = (*Migrate)(nil)
+var _ app.Command = (*commandMigrate)(nil)
 
-// Migrate 描述一个提供服务的命令
-type Migrate struct {
+// 数据迁移执行命令
+type commandMigrate struct {
 	command.Base
 
-	migration Migration
-	logger    glog.Logger
+	migrate migration
+	logger  glog.Logger
 }
 
-// 创建服务命令
-func newMigrate(logger glog.Logger) *Migrate {
-	return &Migrate{
-		Base: command.NewBase("migrate", "数据迁移", "m"),
-
+// 创建数据迁移命令
+func newCommandMigrate(logger glog.Logger) *commandMigrate {
+	return &commandMigrate{
+		Base:   command.NewBase("commandMigrate", "数据迁移", "m"),
 		logger: logger,
 	}
 }
 
-func (m *Migrate) SetMigration(migration Migration) {
-	m.migration = migration
+func (m *commandMigrate) SetMigration(migration migration) {
+	m.migrate = migration
 }
 
-func (m *Migrate) Run(_ *app.Context) error {
-	return m.migration.Migrate()
+func (m *commandMigrate) Run(_ *app.Context) error {
+	return m.migrate.migration()
 }
