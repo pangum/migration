@@ -2,6 +2,7 @@ package migration
 
 import (
 	`database/sql`
+	`fmt`
 	`io/fs`
 	`net/http`
 	`strings`
@@ -105,28 +106,22 @@ func (m *migration) Type() app.ExecutorType {
 	return app.ExecutorTypeBeforeServe
 }
 
-func (m *migration) ExecType() app.ExecType {
-	return app.ExecTypeReturn
+func (m *migration) ExecuteType() app.ExecuteType {
+	return app.ExecuteTypeReturn
 }
 
 func (m *migration) clear(db *sql.DB, table string, ms migrate.MigrationSource) (err error) {
-	var (
-		migrations   []*migrate.Migration
-		migrateFiles = make([]string, 0)
-	)
-
+	var migrations []*migrate.Migration
 	if migrations, err = ms.FindMigrations(); nil != err {
 		return
 	}
+
+	migrateIds := make([]string, 0, len(migrations))
 	for _, migration := range migrations {
-		migrateFiles = append(migrateFiles, migration.Id)
+		migrateIds = append(migrateIds, fmt.Sprintf("'%s'", migration.Id))
 	}
 
-	var stmt *sql.Stmt
-	if stmt, err = db.Prepare("DELETE FROM ? WHERE id NOT IN(?)"); nil != err {
-		return
-	}
-	if _, err = stmt.Exec(table, strings.Join(migrateFiles, ",")); nil != err {
+	if _, err = db.Exec(fmt.Sprintf("DELETE FROM %s WHERE id NOT IN(%s)", table, strings.Join(migrateIds, ", "))); nil != err {
 		// 表不存在不需要清理
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 			if noSuchTable == mysqlErr.Number {
