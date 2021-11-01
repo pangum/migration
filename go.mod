@@ -8,7 +8,7 @@ require (
 	github.com/rubenv/sql-migrate v0.0.0-20210408115534-a32ed26c37ea
 	github.com/storezhang/glog v1.0.7
 	github.com/storezhang/gox v1.7.9
-	github.com/pangum/pangu-logging v1.0.0
+	github.com/pangum/logging v0.0.1
 	github.com/storezhang/simaqian v0.0.3
 )
 
