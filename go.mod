@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/pangum/logging v0.0.2
+	github.com/pangum/logging v0.0.3
 	github.com/pangum/pangu v0.0.1
 	github.com/rubenv/sql-migrate v0.0.0-20210408115534-a32ed26c37ea
 	github.com/storezhang/gox v1.7.9
