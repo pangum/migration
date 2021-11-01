@@ -9,9 +9,10 @@ import (
 	`sync`
 
 	`github.com/go-sql-driver/mysql`
+	`github.com/pangum/logging`
 	`github.com/pangum/pangu`
 	`github.com/pangum/pangu/app`
-	`github.com/storezhang/glog`
+	`github.com/rubenv/sql-migrate`
 	`github.com/storezhang/gox/field`
 )
 
@@ -43,12 +44,12 @@ func (m *migration) migration() (err error) {
 		return
 	}
 
-	err = pangu.New().Invoke(func(config *pangu.Config, logger glog.Logger) (err error) {
-		panguConfig := new(panguConfig)
-		if err = config.Load(panguConfig); nil != err {
+	err = pangu.New().Invoke(func(config *pangu.Config, logger *logging.Logger) (err error) {
+		_panguConfig := new(panguConfig)
+		if err = config.Load(_panguConfig); nil != err {
 			return
 		}
-		database := panguConfig.Database
+		database := _panguConfig.Database
 
 		var migrations migrate.MigrationSource
 		logger.Info("数据迁移开始", field.Int("count", len(m.resources)))

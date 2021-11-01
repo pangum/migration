@@ -2,7 +2,6 @@ package migration
 
 import (
 	`github.com/pangum/pangu`
-	_ `github.com/pangum/pangu-logging`
 )
 
 func init() {
