@@ -13,13 +13,13 @@ type commandMigrate struct {
 	command.Base
 
 	migrate migration
-	logger  logging.Logger
+	logger  *logging.Logger
 }
 
 // 创建数据迁移命令
-func newCommandMigrate(logger logging.Logger) *commandMigrate {
+func newCommandMigrate(logger *logging.Logger) *commandMigrate {
 	return &commandMigrate{
-		Base:   command.NewBase("commandMigrate", "数据迁移", "m"),
+		Base:   command.NewBase(`commandMigrate`, `数据迁移`, `m`),
 		logger: logger,
 	}
 }
