@@ -1,9 +1,9 @@
 package migration
 
 import (
+	`github.com/pangum/logging`
 	`github.com/pangum/pangu/app`
 	`github.com/pangum/pangu/command`
-	`github.com/storezhang/simaqian`
 )
 
 var _ app.Command = (*commandMigrate)(nil)
@@ -13,11 +13,11 @@ type commandMigrate struct {
 	command.Base
 
 	migrate migration
-	logger  simaqian.Logger
+	logger  logging.Logger
 }
 
 // 创建数据迁移命令
-func newCommandMigrate(logger simaqian.Logger) *commandMigrate {
+func newCommandMigrate(logger logging.Logger) *commandMigrate {
 	return &commandMigrate{
 		Base:   command.NewBase("commandMigrate", "数据迁移", "m"),
 		logger: logger,
