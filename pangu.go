@@ -1,8 +1,8 @@
 package migration
 
 import (
-	`github.com/storezhang/pangu`
-	_ `github.com/storezhang/pangu-logging`
+	`github.com/pangum/pangu`
+	_ `github.com/pangum/pangu-logging`
 )
 
 func init() {
@@ -15,9 +15,14 @@ func init() {
 	if err := app.Provides(newCommandMigrate); nil != err {
 		panic(err)
 	}
-	if err := app.Invoke(func(command *commandMigrate) error {
-		return app.Adds(command)
+
+	var cmd *commandMigrate
+	if err := app.Invoke(func(command *commandMigrate) {
+		cmd = command
 	}); nil != err {
+		panic(err)
+	}
+	if err := app.Adds(cmd); nil != err {
 		panic(err)
 	}
 }

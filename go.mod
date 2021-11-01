@@ -1,15 +1,16 @@
-module github.com/storezhang/pangu-migration
+module github.com/pangum/migration
 
 go 1.16
 
 require (
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/pangum/pangu v0.0.1
 	github.com/rubenv/sql-migrate v0.0.0-20210408115534-a32ed26c37ea
-	github.com/storezhang/glog v1.0.8
-	github.com/storezhang/gox v1.5.3
-	github.com/storezhang/pangu v1.2.6
-	github.com/storezhang/pangu-logging v1.0.0
+	github.com/storezhang/glog v1.0.7
+	github.com/storezhang/gox v1.7.9
+	github.com/pangum/pangu-logging v1.0.0
+	github.com/storezhang/simaqian v0.0.3
 )
 
-// replace github.com/storezhang/pangu => ../../storezhang/pangu
+// replace github.com/pangum/pangu => ../../storezhang/pangu
 // replace github.com/storezhang/gox => ../../storezhang/gox
