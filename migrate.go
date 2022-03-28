@@ -1,19 +1,19 @@
 package migration
 
 import (
-	`database/sql`
-	`fmt`
-	`io/fs`
-	`net/http`
-	`strings`
-	`sync`
+	"database/sql"
+	"fmt"
+	"io/fs"
+	"net/http"
+	"strings"
+	"sync"
 
-	`github.com/go-sql-driver/mysql`
-	`github.com/pangum/logging`
-	`github.com/pangum/pangu`
-	`github.com/pangum/pangu/app`
-	`github.com/rubenv/sql-migrate`
-	`github.com/storezhang/gox/field`
+	"github.com/go-sql-driver/mysql"
+	"github.com/goexl/gox/field"
+	"github.com/pangum/logging"
+	"github.com/pangum/pangu"
+	"github.com/pangum/pangu/app"
+	"github.com/rubenv/sql-migrate"
 )
 
 const noSuchTable = 1146
@@ -32,7 +32,7 @@ type migration struct {
 func New() *migration {
 	once.Do(func() {
 		_migration = &migration{
-			resources: make([]fs.FS, 0, 0),
+			resources: make([]fs.FS, 0),
 		}
 	})
 
@@ -99,7 +99,7 @@ func (m *migration) Run() (err error) {
 }
 
 func (m *migration) Name() string {
-	return "数据迁移"
+	return `数据迁移`
 }
 
 func (m *migration) Type() app.ExecutorType {
