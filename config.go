@@ -1,16 +1,16 @@
 package migration
 
 import (
-	"fmt"
-	"strings"
+	`fmt`
+	`strings`
 
-	"github.com/goexl/exc"
-	"github.com/goexl/gox/field"
+	`github.com/goexl/exc`
+	`github.com/goexl/gox/field`
 )
 
 type config struct {
 	// 数据库类型
-	Type string `default:"sqlite3" json:"type" yaml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
+	Type string `default:"mysql" json:"type" yaml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
 
 	// 地址，填写服务器地址
 	Addr string `default:"127.0.0.1:3306" json:"addr" validate:"required,hostname_port"`
