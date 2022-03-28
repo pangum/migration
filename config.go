@@ -1,7 +1,6 @@
 package migration
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -31,7 +30,7 @@ type config struct {
 	Path string `default:"data.db" json:"path,omitempty" yaml:"path"`
 
 	// SSH代理连接
-	SSH *_ssh `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
+	SSH *sshConfig `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
 
 	// 数据迁移配置
 	Migration migrationConfig `json:"migrate" yaml:"migrate" validate:"required"`

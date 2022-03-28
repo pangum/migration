@@ -1,8 +1,8 @@
 package migration
 
-type _ssh struct {
-	// 是否开户
-	Enabled *bool `json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
+type sshConfig struct {
+	// 是否开启
+	Enabled *bool `default:"true" json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 地址
 	Addr string `json:"addr" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port|hostname"`
 	// 用户名
@@ -13,6 +13,6 @@ type _ssh struct {
 	Keyfile string `json:"keyfile" yaml:"keyfile" xml:"keyfile" toml:"keyfile" validate:"required_without=Password"`
 }
 
-func (s *_ssh) Enable() bool {
-	return nil == s.Enabled || *s.Enabled
+func (sc *sshConfig) Enable() bool {
+	return nil == sc.Enabled || *sc.Enabled
 }

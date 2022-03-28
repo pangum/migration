@@ -3,12 +3,14 @@ module github.com/pangum/migration
 go 1.17
 
 require (
+	github.com/elliotchance/sshtunnel v1.3.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/goexl/exc v0.0.4
 	github.com/goexl/gox v0.0.5
 	github.com/pangum/logging v0.1.5
 	github.com/pangum/pangu v0.1.3
 	github.com/rubenv/sql-migrate v1.1.1
+	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
 )
 
 require (
@@ -37,7 +39,6 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064 // indirect
 	golang.org/x/sys v0.0.0-20220327210214-530d0810a4d0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
