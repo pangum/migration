@@ -2,7 +2,11 @@ package migration
 
 type migrationConfig struct {
 	// 是否启用数据迁移
-	Enable bool `default:"true" json:"enable" yaml:"enable"`
+	Enabled *bool `default:"true" json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 升级记录表
-	Table string `default:"migration" json:"table" yaml:"table" validate:"required"`
+	Table string `default:"migration" json:"table" yaml:"table" xml:"table" toml:"table" validate:"required"`
+}
+
+func (mc migrationConfig) Enable() bool {
+	return nil == mc.Enabled || *mc.Enabled
 }

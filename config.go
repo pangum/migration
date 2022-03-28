@@ -10,30 +10,30 @@ import (
 
 type config struct {
 	// 数据库类型
-	Type string `default:"mysql" json:"type" yaml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
+	Type string `default:"mysql" json:"type" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
 
 	// 地址，填写服务器地址
-	Addr string `default:"127.0.0.1:3306" json:"addr" validate:"required,hostname_port"`
+	Addr string `default:"127.0.0.1:3306" json:"addr" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port"`
 	// 授权，用户名
-	Username string `json:"username,omitempty" yaml:"username"`
+	Username string `json:"username,omitempty" yaml:"username" xml:"username" toml:"username"`
 	// 授权，密码
-	Password string `json:"password,omitempty" yaml:"password"`
+	Password string `json:"password,omitempty" yaml:"password" xml:"password" toml:"password"`
 	// 连接协议
-	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" validate:"required,oneof=tcp udp"`
+	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" xml:"protocol" toml:"protocol" validate:"required,oneof=tcp udp"`
 
 	// 连接的数据库名
-	Schema string `json:"schema" yaml:"schema" validate:"required"`
+	Schema string `json:"schema" yaml:"schema" xml:"schema" toml:"schema" validate:"required"`
 
 	// 额外参数
-	Parameters string `json:"parameters,omitempty" yaml:"parameters"`
+	Parameters string `json:"parameters,omitempty" yaml:"parameters" xml:"parameters" toml:"parameters"`
 	// SQLite填写数据库文件的路径
-	Path string `default:"data.db" json:"path,omitempty" yaml:"path"`
+	Path string `default:"data.db" json:"path,omitempty" yaml:"path" xml:"path" toml:"path"`
 
 	// SSH代理连接
 	SSH *sshConfig `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
 
 	// 数据迁移配置
-	Migration migrationConfig `json:"migrate" yaml:"migrate" validate:"required"`
+	Migration migrationConfig `json:"migrate" yaml:"migrate" xml:"migration" toml:"migration" validate:"required"`
 }
 
 func (c *config) dsn() (dsn string, err error) {

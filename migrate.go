@@ -1,22 +1,23 @@
 package migration
 
 import (
-	`database/sql`
-	`fmt`
-	`io/fs`
-	`net/http`
-	`strings`
-	`sync`
-	`time`
+	"database/sql"
+	"fmt"
+	"io/fs"
+	"net/http"
+	"strings"
+	"sync"
+	"time"
 
-	`github.com/elliotchance/sshtunnel`
-	`github.com/go-sql-driver/mysql`
-	`github.com/goexl/gox/field`
-	`github.com/pangum/logging`
-	`github.com/pangum/pangu`
-	`github.com/pangum/pangu/app`
-	`github.com/rubenv/sql-migrate`
-	`golang.org/x/crypto/ssh`
+	"github.com/elliotchance/sshtunnel"
+	"github.com/go-sql-driver/mysql"
+	"github.com/goexl/gox/field"
+	"github.com/pangum/logging"
+	"github.com/pangum/pangu"
+	"github.com/pangum/pangu/app"
+	"github.com/rubenv/sql-migrate"
+	migrate "github.com/rubenv/sql-migrate"
+	"golang.org/x/crypto/ssh"
 )
 
 const noSuchTable = 1146
@@ -77,6 +78,10 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 		return
 	}
 	database := _panguConfig.Database
+
+	if !database.Migration.Enable() {
+		return
+	}
 
 	var migrations migrate.MigrationSource
 	logger.Info(`数据迁移开始`, field.Int(`count`, len(m.resources)))
