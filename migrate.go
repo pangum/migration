@@ -16,7 +16,6 @@ import (
 	"github.com/pangum/pangu"
 	"github.com/pangum/pangu/app"
 	"github.com/rubenv/sql-migrate"
-	migrate "github.com/rubenv/sql-migrate"
 	"golang.org/x/crypto/ssh"
 )
 
