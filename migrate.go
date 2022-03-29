@@ -99,6 +99,7 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 	if dsn, err = m.dsn(database, logger); nil != err {
 		return
 	}
+
 	var db *sql.DB
 	if db, err = sql.Open(database.Type, dsn); nil != err {
 		return
