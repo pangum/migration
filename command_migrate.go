@@ -1,16 +1,16 @@
 package migration
 
 import (
-	`github.com/pangum/logging`
-	`github.com/pangum/pangu/app`
-	`github.com/pangum/pangu/command`
+	"github.com/pangum/logging"
+	"github.com/pangum/pangu/app"
+	"github.com/pangum/pangu/cmd"
 )
 
 var _ app.Command = (*commandMigrate)(nil)
 
 // 数据迁移执行命令
 type commandMigrate struct {
-	command.Base
+	cmd.Command
 
 	migrate migration
 	logger  *logging.Logger
@@ -19,8 +19,8 @@ type commandMigrate struct {
 // 创建数据迁移命令
 func newCommandMigrate(logger *logging.Logger) *commandMigrate {
 	return &commandMigrate{
-		Base:   command.NewBase(`commandMigrate`, `数据迁移`, `m`),
-		logger: logger,
+		Command: *cmd.New(`migrate`, cmd.Aliases(`m`), cmd.Description(`数据迁移`)),
+		logger:  logger,
 	}
 }
 

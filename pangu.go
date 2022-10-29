@@ -1,7 +1,7 @@
 package migration
 
 import (
-	`github.com/pangum/pangu`
+	"github.com/pangum/pangu"
 )
 
 func init() {

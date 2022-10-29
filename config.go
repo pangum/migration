@@ -1,11 +1,11 @@
 package migration
 
 import (
-	`fmt`
-	`strings`
+	"fmt"
+	"strings"
 
-	`github.com/goexl/exc`
-	`github.com/goexl/gox/field`
+	"github.com/goexl/exc"
+	"github.com/goexl/gox/field"
 )
 
 type config struct {
