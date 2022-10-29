@@ -10,6 +10,7 @@ import (
 
 type config struct {
 	// 数据库类型
+	// nolint: lll
 	Type string `default:"mysql" json:"type" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
 
 	// 地址，填写服务器地址
@@ -19,6 +20,7 @@ type config struct {
 	// 授权，密码
 	Password string `json:"password,omitempty" yaml:"password" xml:"password" toml:"password"`
 	// 连接协议
+	// nolint: lll
 	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" xml:"protocol" toml:"protocol" validate:"required,oneof=tcp udp"`
 
 	// 连接的数据库名
