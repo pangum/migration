@@ -155,8 +155,8 @@ func (m *migration) clear(db *sql.DB, table string, ms migrate.MigrationSource) 
 		migrateIds = append(migrateIds, fmt.Sprintf(`'%s'`, __migration.Id))
 	}
 
-	sql:=fmt.Sprintf(`DELETE FROM %s WHERE id NOT IN(%s)`, table, strings.Join(migrateIds, `, `))
-	if _, err = db.Exec(sql); nil != err {
+	ids:=strings.Join(migrateIds, `, `)
+	if _, err = db.Exec(fmt.Sprintf(`DELETE FROM %s WHERE id NOT IN(%s)`, table, ids)); nil != err {
 		// 表不存在不需要清理
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 			if noSuchTable == mysqlErr.Number {
