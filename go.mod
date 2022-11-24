@@ -5,8 +5,8 @@ go 1.18
 require (
 	github.com/elliotchance/sshtunnel v1.3.1
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/goexl/exc v0.0.4
-	github.com/goexl/gox v0.1.2
+	github.com/goexl/exc v0.0.5
+	github.com/goexl/gox v0.1.3
 	github.com/pangum/logging v0.1.7
 	github.com/pangum/pangu v0.2.4
 	github.com/rubenv/sql-migrate v1.2.0
@@ -29,7 +29,6 @@ require (
 	github.com/goexl/xiren v0.0.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/rs/xid v1.4.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
