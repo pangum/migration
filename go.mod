@@ -10,7 +10,7 @@ require (
 	github.com/pangum/logging v0.1.9
 	github.com/pangum/pangu v0.3.0
 	github.com/rubenv/sql-migrate v1.2.0
-	golang.org/x/crypto v0.3.0
+	golang.org/x/crypto v0.4.0
 )
 
 require (
