@@ -10,7 +10,7 @@ var _ app.Command = (*commandMigrate)(nil)
 
 // 数据迁移执行命令
 type commandMigrate struct {
-	cmd.Command
+	*cmd.Command
 
 	migrate migration
 	logger  *logging.Logger
@@ -19,15 +19,15 @@ type commandMigrate struct {
 // 创建数据迁移命令
 func newCommandMigrate(logger *logging.Logger) *commandMigrate {
 	return &commandMigrate{
-		Command: *cmd.New(`migrate`, cmd.Aliases(`m`), cmd.Description(`数据迁移`)),
+		Command: cmd.New("migrate").Aliases("m").Usage("数据迁移").Build(),
 		logger:  logger,
 	}
 }
 
-func (m *commandMigrate) SetMigration(migration migration) {
-	m.migrate = migration
+func (cm *commandMigrate) SetMigration(migration migration) {
+	cm.migrate = migration
 }
 
-func (m *commandMigrate) Run(_ *app.Context) error {
-	return m.migrate.migration()
+func (cm *commandMigrate) Run(_ *app.Context) error {
+	return cm.migrate.migration()
 }

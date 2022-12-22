@@ -41,21 +41,21 @@ type config struct {
 func (c *config) dsn() (dsn string, err error) {
 	switch strings.ToLower(c.Type) {
 	case `mysql`:
-		dsn = fmt.Sprintf(`%s:%s@%s(%s)`, c.Username, c.Password, c.Protocol, c.Addr)
+		dsn = fmt.Sprintf("%s:%s@%s(%s)", c.Username, c.Password, c.Protocol, c.Addr)
 		if `` != strings.TrimSpace(c.Schema) {
-			dsn = fmt.Sprintf(`%s/%s`, dsn, strings.TrimSpace(c.Schema))
+			dsn = fmt.Sprintf("%s/%s", dsn, strings.TrimSpace(c.Schema))
 		}
-	case `sqlite3`:
+	case "sqlite3":
 		dsn = c.Path
 	default:
-		err = exc.NewField(`不支持的数据库类型`, field.String(`type`, c.Type))
+		err = exc.NewField("不支持的数据库类型", field.New("type", c.Type))
 	}
 	if nil != err {
 		return
 	}
 
 	// 增加参数
-	if `` != strings.TrimSpace(c.Parameters) {
+	if "" != strings.TrimSpace(c.Parameters) {
 		dsn = fmt.Sprintf("%s?%s", dsn, strings.TrimSpace(c.Parameters))
 	}
 

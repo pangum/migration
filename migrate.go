@@ -11,6 +11,7 @@ import (
 
 	"github.com/elliotchance/sshtunnel"
 	"github.com/go-sql-driver/mysql"
+	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
 	"github.com/pangum/logging"
 	"github.com/pangum/pangu"
@@ -83,7 +84,7 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 	}
 
 	var migrations migrate.MigrationSource
-	logger.Info(`数据迁移开始`, field.Int(`count`, len(m.resources)))
+	logger.Info("数据迁移开始", field.New(`count`, len(m.resources)))
 	// 设置升级记录的表名，默认值是grop_migrations
 	migrate.SetTable(database.Migration.Table)
 	migrate.SetIgnoreUnknown(true)
@@ -114,7 +115,7 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 		return
 	}
 	_, err = migrate.Exec(db, database.Type, migrations, migrate.Up)
-	logger.Info(`数据迁移成功`, field.Int(`count`, len(m.resources)))
+	logger.Info("数据迁移成功", field.New("count", len(m.resources)))
 
 	return
 }
@@ -124,21 +125,18 @@ func (m *migration) dsn(conf config, logger *logging.Logger) (dsn string, err er
 		return
 	}
 
-	var auth ssh.AuthMethod
-	if `` != conf.Password {
-		auth = ssh.Password(conf.Password)
-	} else {
-		auth = sshtunnel.PrivateKeyFile(conf.SSH.Keyfile)
-	}
+	password := conf.Password
+	keyfile := conf.SSH.Keyfile
+	auth := gox.If[ssh.AuthMethod]("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
 	host := fmt.Sprintf(`%s@%s`, conf.Username, conf.Addr)
-	tunnel := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, `65513`)
+	tunnel := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65513")
 	tunnel.Log = newSSHLogger(logger)
 	go func() {
 		err = tunnel.Start()
 	}()
 
 	time.Sleep(100 * time.Millisecond)
-	conf.Addr = fmt.Sprintf(`127.0.0.1:%d`, tunnel.Local.Port)
+	conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
 	dsn, err = conf.dsn()
 
 	return
@@ -152,11 +150,11 @@ func (m *migration) clear(db *sql.DB, table string, ms migrate.MigrationSource) 
 
 	migrateIds := make([]string, 0, len(migrations))
 	for _, __migration := range migrations {
-		migrateIds = append(migrateIds, fmt.Sprintf(`'%s'`, __migration.Id))
+		migrateIds = append(migrateIds, fmt.Sprintf("'%s'", __migration.Id))
 	}
 
-	ids := strings.Join(migrateIds, `, `)
-	if _, err = db.Exec(fmt.Sprintf(`DELETE FROM %s WHERE id NOT IN(%s)`, table, ids)); nil != err {
+	ids := strings.Join(migrateIds, ",")
+	if _, err = db.Exec(fmt.Sprintf("DELETE FROM %s WHERE id NOT IN(%s)", table, ids)); nil != err {
 		// 表不存在不需要清理
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 			if noSuchTable == mysqlErr.Number {

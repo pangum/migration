@@ -17,6 +17,6 @@ func newSSHLogger(logger *logging.Logger) *sshLogger {
 	}
 }
 
-func (sl *sshLogger) Printf(format string, v ...interface{}) {
-	sl.logger.Info(`连接隧道`, field.String(`ssh`, fmt.Sprintf(format, v...)))
+func (sl *sshLogger) Printf(format string, v ...any) {
+	sl.logger.Info("连接隧道", field.New("ssh", fmt.Sprintf(format, v...)))
 }
