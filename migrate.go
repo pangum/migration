@@ -77,16 +77,15 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 	if err = config.Load(_panguConfig); nil != err {
 		return
 	}
-	database := _panguConfig.Database
 
-	if !database.Migration.Enable() {
+	_config := _panguConfig.Database
+	if !_config.Migration.Enable() {
 		return
 	}
 
 	var migrations migrate.MigrationSource
-	logger.Info("数据迁移开始", field.New(`count`, len(m.resources)))
-	// 设置升级记录的表名，默认值是grop_migrations
-	migrate.SetTable(database.Migration.Table)
+	logger.Info("数据迁移开始", field.New("count", len(m.resources)))
+	migrate.SetTable(_config.Migration.Table)
 	migrate.SetIgnoreUnknown(true)
 
 	// 开始升级数据库
@@ -96,39 +95,34 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 		FileSystem: http.FS(m.resources[0]),
 	}
 
-	var dsn string
-	if dsn, err = m.dsn(database, logger); nil != err {
+	if err = m.setupSSH(_config, logger); nil != err {
 		return
 	}
 
-	var db *sql.DB
-	if db, err = sql.Open(database.Type, dsn); nil != err {
-		return
+	if dsn, de := _config.dsn(); nil != de {
+		err = de
+	} else if db, oe := sql.Open(_config.Type, dsn); nil != oe {
+		err = oe
+	} else if ce := m.clear(db, _config.Migration.Table, migrations); nil != ce {
+		err = ce
+	} else if _, ee := migrate.Exec(db, _config.Type, migrations, migrate.Up); nil != ee {
+		err = ee
+	} else {
+		logger.Info("数据迁移成功", field.New("count", len(m.resources)))
 	}
-	defer func() {
-		if closeErr := db.Close(); nil != closeErr {
-			err = closeErr
-		}
-	}()
-
-	if err = m.clear(db, database.Migration.Table, migrations); nil != err {
-		return
-	}
-	_, err = migrate.Exec(db, database.Type, migrations, migrate.Up)
-	logger.Info("数据迁移成功", field.New("count", len(m.resources)))
 
 	return
 }
 
-func (m *migration) dsn(conf config, logger *logging.Logger) (dsn string, err error) {
-	if nil == conf.SSH || !conf.SSH.Enable() {
+func (m *migration) setupSSH(conf *config, logger *logging.Logger) (err error) {
+	if !conf.sshEnabled() {
 		return
 	}
 
 	password := conf.Password
 	keyfile := conf.SSH.Keyfile
 	auth := gox.If[ssh.AuthMethod]("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
-	host := fmt.Sprintf(`%s@%s`, conf.Username, conf.Addr)
+	host := fmt.Sprintf("%s@%s", conf.Username, conf.Addr)
 	tunnel := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65513")
 	tunnel.Log = newSSHLogger(logger)
 	go func() {
@@ -137,7 +131,6 @@ func (m *migration) dsn(conf config, logger *logging.Logger) (dsn string, err er
 
 	time.Sleep(100 * time.Millisecond)
 	conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
-	dsn, err = conf.dsn()
 
 	return
 }

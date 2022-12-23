@@ -24,12 +24,10 @@ type config struct {
 	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" xml:"protocol" toml:"protocol" validate:"required,oneof=tcp udp"`
 
 	// 连接的数据库名
-	Schema string `json:"schema" yaml:"schema" xml:"schema" toml:"schema" validate:"required"`
+	Schema string `default:"data.db" json:"schema" yaml:"schema" xml:"schema" toml:"schema" validate:"required"`
 
 	// 额外参数
-	Parameters string `json:"parameters,omitempty" yaml:"parameters" xml:"parameters" toml:"parameters"`
-	// SQLite填写数据库文件的路径
-	Path string `default:"data.db" json:"path,omitempty" yaml:"path" xml:"path" toml:"path"`
+	Parameters string `default:"parseTime=true" json:"parameters,omitempty" yaml:"parameters" xml:"parameters" toml:"parameters"`
 
 	// SSH代理连接
 	SSH *sshConfig `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
@@ -46,7 +44,7 @@ func (c *config) dsn() (dsn string, err error) {
 			dsn = fmt.Sprintf("%s/%s", dsn, strings.TrimSpace(c.Schema))
 		}
 	case "sqlite3":
-		dsn = c.Path
+		dsn = c.Schema
 	default:
 		err = exc.NewField("不支持的数据库类型", field.New("type", c.Type))
 	}
@@ -55,9 +53,13 @@ func (c *config) dsn() (dsn string, err error) {
 	}
 
 	// 增加参数
-	if "" != strings.TrimSpace(c.Parameters) {
-		dsn = fmt.Sprintf("%s?%s", dsn, strings.TrimSpace(c.Parameters))
+	if "" != c.Parameters {
+		dsn = fmt.Sprintf("%s?%s", dsn, c.Parameters)
 	}
 
 	return
+}
+
+func (c *config) sshEnabled() bool {
+	return nil != c.SSH && c.SSH.Enable()
 }
