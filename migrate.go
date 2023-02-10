@@ -121,7 +121,7 @@ func (m *migration) setupSSH(conf *config, logger *logging.Logger) (err error) {
 
 	password := conf.Password
 	keyfile := conf.SSH.Keyfile
-	auth := gox.If[ssh.AuthMethod]("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
+	auth := gox.Ifx[ssh.AuthMethod]("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
 	host := fmt.Sprintf("%s@%s", conf.Username, conf.Addr)
 	tunnel := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65513")
 	tunnel.Log = newSSHLogger(logger)
