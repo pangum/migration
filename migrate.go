@@ -16,7 +16,6 @@ import (
 	"github.com/pangum/logging"
 	"github.com/pangum/pangu"
 	"github.com/pangum/pangu/app"
-	"github.com/rubenv/sql-migrate"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -78,7 +77,7 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 		return
 	}
 
-	_config := _panguConfig.Database
+	_config := _panguConfig.Db
 	if !_config.Migration.Enable() {
 		return
 	}
