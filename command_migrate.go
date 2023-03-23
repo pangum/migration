@@ -13,11 +13,11 @@ type commandMigrate struct {
 	*cmd.Command
 
 	migrate migration
-	logger  *logging.Logger
+	logger  logging.Logger
 }
 
 // 创建数据迁移命令
-func newCommandMigrate(logger *logging.Logger) *commandMigrate {
+func newCommandMigrate(logger logging.Logger) *commandMigrate {
 	return &commandMigrate{
 		Command: cmd.New("migrate").Aliases("m").Usage("数据迁移").Build(),
 		logger:  logger,

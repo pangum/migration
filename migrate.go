@@ -72,20 +72,20 @@ func (m *migration) migration() (err error) {
 	return
 }
 
-func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err error) {
-	_panguConfig := new(panguConfig)
-	if err = config.Load(_panguConfig); nil != err {
+func (m *migration) migrate(config *pangu.Config, logger logging.Logger) (err error) {
+	wrap := new(wrapper)
+	if err = config.Load(wrap); nil != err {
 		return
 	}
 
-	_config := _panguConfig.Db
-	if !_config.Migration.Enable() {
+	conf := wrap.Db
+	if !conf.Migration.Enable() {
 		return
 	}
 
 	var migrations migrate.MigrationSource
 	logger.Info("数据迁移开始", field.New("count", len(m.resources)))
-	migrate.SetTable(_config.Migration.Table)
+	migrate.SetTable(conf.Migration.Table)
 	migrate.SetIgnoreUnknown(true)
 
 	// 开始升级数据库
@@ -95,17 +95,17 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 		FileSystem: http.FS(m.resources[0]),
 	}
 
-	if err = m.setupSSH(_config, logger); nil != err {
+	if err = m.setupSSH(conf, logger); nil != err {
 		return
 	}
 
-	if dsn, de := _config.dsn(); nil != de {
+	if dsn, de := conf.dsn(); nil != de {
 		err = de
-	} else if db, oe := sql.Open(_config.Type, dsn); nil != oe {
+	} else if db, oe := sql.Open(conf.Type, dsn); nil != oe {
 		err = oe
-	} else if ce := m.clear(db, _config.Migration.Table, migrations); nil != ce {
+	} else if ce := m.clear(db, conf.Migration.Table, migrations); nil != ce {
 		err = ce
-	} else if _, ee := migrate.Exec(db, _config.Type, migrations, migrate.Up); nil != ee {
+	} else if _, ee := migrate.Exec(db, conf.Type, migrations, migrate.Up); nil != ee {
 		err = ee
 	} else {
 		logger.Info("数据迁移成功", field.New("count", len(m.resources)))
@@ -114,7 +114,7 @@ func (m *migration) migrate(config *pangu.Config, logger *logging.Logger) (err e
 	return
 }
 
-func (m *migration) setupSSH(conf *config, logger *logging.Logger) (err error) {
+func (m *migration) setupSSH(conf *config, logger logging.Logger) (err error) {
 	if !conf.sshEnabled() {
 		return
 	}

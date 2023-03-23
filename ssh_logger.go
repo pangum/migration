@@ -8,10 +8,10 @@ import (
 )
 
 type sshLogger struct {
-	logger *logging.Logger
+	logger logging.Logger
 }
 
-func newSSHLogger(logger *logging.Logger) *sshLogger {
+func newSSHLogger(logger logging.Logger) *sshLogger {
 	return &sshLogger{
 		logger: logger,
 	}
