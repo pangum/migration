@@ -95,7 +95,7 @@ func (m *migration) migrate(config *pangu.Config, logger logging.Logger) (err er
 		FileSystem: http.FS(m.resources[0]),
 	}
 
-	if err = m.setupSSH(conf, logger); nil != err {
+	if err = m.enableSSH(conf, logger); nil != err {
 		return
 	}
 
@@ -114,27 +114,23 @@ func (m *migration) migrate(config *pangu.Config, logger logging.Logger) (err er
 	return
 }
 
-func (m *migration) setupSSH(conf *config, logger logging.Logger) (err error) {
+func (m *migration) enableSSH(conf *config, logger logging.Logger) (err error) {
 	if !conf.sshEnabled() {
 		return
 	}
 
 	password := conf.Password
 	keyfile := conf.SSH.Keyfile
-	auth := gox.Ifx("" != password, func() ssh.AuthMethod {
-		return ssh.Password(password)
-	}, func() ssh.AuthMethod {
-		return sshtunnel.PrivateKeyFile(keyfile)
-	})
+	auth := gox.Ift("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
 	host := fmt.Sprintf("%s@%s", conf.Username, conf.Addr)
-	tunnel := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65513")
-	tunnel.Log = newSSHLogger(logger)
-	go func() {
-		err = tunnel.Start()
-	}()
-
-	time.Sleep(100 * time.Millisecond)
-	conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65513"); nil != ne {
+		err = ne
+	} else {
+		tunnel.Log = newSSHLogger(logger)
+		go startTunnel(tunnel)
+		time.Sleep(100 * time.Millisecond)
+		conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+	}
 
 	return
 }
@@ -161,4 +157,8 @@ func (m *migration) clear(db *sql.DB, table string, ms migrate.MigrationSource) 
 	}
 
 	return
+}
+
+func startTunnel(tunnel *sshtunnel.SSHTunnel) {
+	_ = tunnel.Start()
 }
