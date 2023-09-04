@@ -3,7 +3,7 @@ module github.com/pangum/migration
 go 1.19
 
 require (
-	github.com/elliotchance/sshtunnel v1.5.0
+	github.com/elliotchance/sshtunnel v1.6.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/goexl/exc v0.0.5
 	github.com/goexl/gox v0.3.6
