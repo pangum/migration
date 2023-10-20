@@ -1,4 +1,4 @@
-package migration
+package plugin
 
 import (
 	"fmt"
@@ -6,9 +6,10 @@ import (
 
 	"github.com/goexl/exc"
 	"github.com/goexl/gox/field"
+	"github.com/pangum/migration/internal/config"
 )
 
-type config struct {
+type Config struct {
 	// 数据库类型
 	// nolint: lll
 	Type string `default:"mysql" json:"type" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
@@ -30,13 +31,13 @@ type config struct {
 	Parameters string `default:"parseTime=true" json:"parameters,omitempty" yaml:"parameters" xml:"parameters" toml:"parameters"`
 
 	// SSH代理连接
-	SSH *sshConfig `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
+	SSH *config.Ssh `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
 
 	// 数据迁移配置
-	Migration migrationConfig `json:"migrate" yaml:"migrate" xml:"migration" toml:"migration" validate:"required"`
+	Migration config.Migration `json:"migrate" yaml:"migrate" xml:"migration" toml:"migration" validate:"required"`
 }
 
-func (c *config) dsn() (dsn string, err error) {
+func (c *Config) Dsn() (dsn string, err error) {
 	switch strings.ToLower(c.Type) {
 	case `mysql`:
 		dsn = fmt.Sprintf("%s:%s@%s(%s)", c.Username, c.Password, c.Protocol, c.Addr)
@@ -60,6 +61,6 @@ func (c *config) dsn() (dsn string, err error) {
 	return
 }
 
-func (c *config) sshEnabled() bool {
+func (c *Config) SshEnabled() bool {
 	return nil != c.SSH && c.SSH.Enable()
 }

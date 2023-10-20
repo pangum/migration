@@ -1,6 +1,6 @@
-package migration
+package config
 
-type sshConfig struct {
+type Ssh struct {
 	// 是否开启
 	Enabled *bool `default:"true" json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 地址
@@ -13,6 +13,6 @@ type sshConfig struct {
 	Keyfile string `json:"keyfile" yaml:"keyfile" xml:"keyfile" toml:"keyfile" validate:"required_without=Password"`
 }
 
-func (sc *sshConfig) Enable() bool {
-	return nil == sc.Enabled || *sc.Enabled
+func (s *Ssh) Enable() bool {
+	return nil == s.Enabled || *s.Enabled
 }

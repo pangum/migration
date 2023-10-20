@@ -1,27 +1,16 @@
 package migration
 
 import (
+	"github.com/pangum/migration/internal/command"
+	"github.com/pangum/migration/internal/core"
+	"github.com/pangum/migration/internal/plugin"
 	"github.com/pangum/pangu"
 )
 
 func init() {
-	app := pangu.New()
-	migrate := New()
-
-	if err := app.Adds(migrate); nil != err {
-		panic(err)
-	}
-	if err := app.Provides(newCommandMigrate); nil != err {
-		panic(err)
-	}
-
-	var cmd *commandMigrate
-	if err := app.Invoke(func(command *commandMigrate) {
-		cmd = command
-	}); nil != err {
-		panic(err)
-	}
-	if err := app.Adds(cmd); nil != err {
-		panic(err)
-	}
+	pangu.New().Get().Dependencies().Build().Provide(
+		core.New,
+		command.New,
+		new(plugin.Creator).New,
+	)
 }
