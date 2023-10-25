@@ -14,7 +14,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 	"github.com/pangum/migration/internal/internal/constant"
 	"github.com/pangum/migration/internal/internal/logger"
 	"github.com/pangum/migration/internal/plugin"
@@ -47,10 +47,10 @@ func (m *Migration) Add(migration fs.FS) {
 }
 
 func (m *Migration) Migrate() error {
-	return gox.If(0 != len(m.resources), pangu.New().Get().Dependency().Build().Get(m.New))
+	return gox.If(0 != len(m.resources), pangu.New().Get().Dependency().Get(m.New).Build().Build().Inject())
 }
 
-func (m *Migration) New(config *pangu.Config, logger simaqian.Logger) (err error) {
+func (m *Migration) New(config *pangu.Config, logger log.Logger) (err error) {
 	wrapper := new(plugin.Wrapper)
 	if ge := config.Build().Get(wrapper); nil != ge {
 		err = ge
@@ -61,7 +61,7 @@ func (m *Migration) New(config *pangu.Config, logger simaqian.Logger) (err error
 	return
 }
 
-func (m *Migration) new(config *plugin.Config, logger simaqian.Logger) (err error) {
+func (m *Migration) new(config *plugin.Config, logger log.Logger) (err error) {
 	if !config.Migration.Enable() {
 		return
 	}
@@ -90,7 +90,7 @@ func (m *Migration) new(config *plugin.Config, logger simaqian.Logger) (err erro
 	return
 }
 
-func (m *Migration) enableSSH(conf *plugin.Config, external simaqian.Logger) (err error) {
+func (m *Migration) enableSSH(conf *plugin.Config, external log.Logger) (err error) {
 	if !conf.SshEnabled() {
 		return
 	}

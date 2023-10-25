@@ -7,9 +7,11 @@ import (
 )
 
 func init() {
-	pangu.New().Get().Dependencies().Build().Provide(
+	creator := new(command.Creator)
+	pangu.New().Get().Dependency().Put(
 		core.New,
-		command.New,
-		new(command.Creator).New,
-	)
+		creator.New,
+	).Build().Get(
+		creator.Add,
+	).Build().Build().Apply()
 }

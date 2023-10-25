@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	"github.com/goexl/gox/field"
-	"github.com/pangum/logging"
+	"github.com/goexl/log"
 )
 
 type Ssh struct {
-	logger logging.Logger
+	logger log.Logger
 }
 
-func NewSsh(logger logging.Logger) *Ssh {
+func NewSsh(logger log.Logger) *Ssh {
 	return &Ssh{
 		logger: logger,
 	}
