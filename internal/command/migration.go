@@ -1,6 +1,8 @@
 package command
 
 import (
+	"context"
+
 	"github.com/pangum/migration/internal/core"
 	"github.com/pangum/pangu/runtime"
 )
@@ -20,5 +22,9 @@ func New(migration *core.Migration) *Migration {
 }
 
 func (m *Migration) Run(_ *runtime.Context) error {
+	return m.migration.Migrate()
+}
+
+func (m *Migration) Before(_ context.Context) error {
 	return m.migration.Migrate()
 }
