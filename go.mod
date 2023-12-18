@@ -7,7 +7,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/goexl/exception v0.0.1
 	github.com/goexl/gox v0.3.8
-	github.com/goexl/log v0.0.5
+	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v0.4.5
 	github.com/rubenv/sql-migrate v1.5.2
 	golang.org/x/crypto v0.16.0
