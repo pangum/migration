@@ -9,7 +9,7 @@ require (
 	github.com/goexl/gox v0.3.8
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v0.4.5
-	github.com/rubenv/sql-migrate v1.5.2
+	github.com/rubenv/sql-migrate v1.6.0
 	golang.org/x/crypto v0.17.0
 )
 
@@ -36,7 +36,6 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rs/xid v1.5.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/storezhang/dig v0.0.1 // indirect
 	github.com/urfave/cli/v2 v2.26.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
