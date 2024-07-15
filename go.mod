@@ -9,7 +9,7 @@ require (
 	github.com/goexl/gox v0.3.8
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v0.4.5
-	github.com/rubenv/sql-migrate v1.6.1
+	github.com/rubenv/sql-migrate v1.7.0
 	golang.org/x/crypto v0.25.0
 )
 
