@@ -9,7 +9,7 @@ require (
 	github.com/goexl/exception v0.0.1
 	github.com/goexl/gox v1.8.5
 	github.com/goexl/log v0.0.7
-	github.com/pangum/pangu v1.4.1
+	github.com/pangum/pangu v1.4.3
 	github.com/rubenv/sql-migrate v1.7.0
 	golang.org/x/crypto v0.27.0
 )
@@ -26,7 +26,7 @@ require (
 	github.com/go-playground/validator/v10 v10.22.0 // indirect
 	github.com/goexl/baozheng v0.0.1 // indirect
 	github.com/goexl/env v0.0.2 // indirect
-	github.com/goexl/gfx v0.1.7 // indirect
+	github.com/goexl/gfx v0.2.1 // indirect
 	github.com/goexl/mengpo v0.2.6 // indirect
 	github.com/goexl/xiren v0.0.6 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
@@ -34,7 +34,7 @@ require (
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
+	github.com/pangum/config v0.0.6 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -45,5 +45,4 @@ require (
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
