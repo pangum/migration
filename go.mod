@@ -9,7 +9,7 @@ require (
 	github.com/goexl/exception v0.0.1
 	github.com/goexl/gox v1.8.9
 	github.com/goexl/log v0.0.7
-	github.com/pangum/pangu v1.4.5
+	github.com/pangum/pangu v1.4.6
 	github.com/rubenv/sql-migrate v1.7.0
 	golang.org/x/crypto v0.27.0
 )
@@ -29,7 +29,7 @@ require (
 	github.com/goexl/gfx v0.2.3 // indirect
 	github.com/goexl/mengpo v0.2.6 // indirect
 	github.com/goexl/structer v0.1.8 // indirect
-	github.com/goexl/xiren v0.0.7 // indirect
+	github.com/goexl/xiren v0.0.8 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
