@@ -11,7 +11,7 @@ require (
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v1.4.6
 	github.com/rubenv/sql-migrate v1.7.0
-	golang.org/x/crypto v0.27.0
+	golang.org/x/crypto v0.28.0
 )
 
 require (
@@ -45,6 +45,6 @@ require (
 	github.com/zs5460/art v0.3.0 // indirect
 	go.uber.org/dig v1.18.0 // indirect
 	golang.org/x/net v0.29.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/text v0.19.0 // indirect
 )
