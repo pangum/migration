@@ -6,7 +6,7 @@ toolchain go1.23.1
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/goexl/exception v0.0.1
+	github.com/goexl/exception v0.0.3
 	github.com/goexl/gox v1.8.9
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v1.4.8
