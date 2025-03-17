@@ -1,14 +1,14 @@
 module github.com/pangum/migration
 
 go 1.21
-toolchain go1.23.1
+toolchain go1.24.1
 
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/go-sql-driver/mysql v1.9.0
 	github.com/goexl/exception v0.0.3
 	github.com/goexl/gox v1.9.2
-	github.com/goexl/log v0.0.7
+	github.com/goexl/log v0.0.9
 	github.com/pangum/pangu v1.4.8
 	github.com/rubenv/sql-migrate v1.7.1
 	golang.org/x/crypto v0.36.0
